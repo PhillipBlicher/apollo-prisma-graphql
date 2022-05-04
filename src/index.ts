@@ -30,38 +30,7 @@ interface ConnectionParams {
 
 const server = new ApolloServer({
   schema: schemaWithMiddleware,
-  subscriptions: {
-    path: '/subscriptions',
-    onConnect: async (connectionParams: ConnectionParams, webSocket, context) => {
-      console.log('Client connected');
-      try {
-        if (connectionParams.authorization) {
-          const header = connectionParams.authorization?.split(' ');
-          const [bearer, token] = header || [];
-          const user: { userId: string } = (await verify(token || '', process.env.SECRET!)) as any;
-          return { userId: user.userId };
-        }
-      } catch {
-        throw new AuthenticationError('UNAUTHENTICATED');
-      }
-    },
-    onDisconnect: (webSocket, context) => {
-      console.log('Client disconnected');
-    },
-  },
-
   async context(httpContext) {
-    if (httpContext.connection) {
-      // check connection for metadata
-      return {
-        db,
-        user: await db.user.findUnique({
-          where: { id: httpContext.connection.context.userId },
-        }),
-        pubSub,
-      };
-    }
-
     try {
       const header = httpContext.req.header('authorization')?.split(' ');
       const [bearer, token] = header || [];
@@ -69,17 +38,16 @@ const server = new ApolloServer({
       const context = {
         db,
         // <-- You put Prisma client on the "db" context property
-        user: await db.user.findUnique({
-          where: { id: user?.userId },
-          include: { cart: true, details: true, inventory: true },
+        user: await db.users.findUnique({
+          where: { Id: user.userId }
         }),
-        pubSub,
+
       };
       return context;
     } catch {
       return {
         db,
-        pubSub,
+  
       };
     }
   },

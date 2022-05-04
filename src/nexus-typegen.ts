@@ -14,15 +14,6 @@ declare global {
 }
 
 export interface NexusGenInputs {
-  BuyItemArgs: { // input type
-    itemId: string; // ID!
-    userId: string; // ID!
-  }
-  ItemArgs: { // input type
-    partDescription?: string | null; // String
-    partName?: string | null; // String
-    saberPart?: string | null; // String
-  }
   UserDetailsUpdateArgs: { // input type
     firstName?: string | null; // String
     id?: string | null; // ID
@@ -42,39 +33,17 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
-  Item: { // root type
-    id: string; // ID!
-    partDescription?: string | null; // String
-    price?: number | null; // Int
-    userId?: string | null; // String
+  Characters: { // root type
+    OwnerId: string; // String!
   }
   Login: { // root type
     id?: string | null; // ID
-    token?: string | null; // String
-    username?: string | null; // String
   }
   Mutation: {};
-  PartName: { // root type
-    id: string; // ID!
-    name: string; // String!
-  }
   Query: {};
-  SaberPart: { // root type
-    id: string; // ID!
-    name: string; // String!
-  }
-  Subscription: {};
-  User: { // root type
-    id: string; // ID!
-    money: number; // Int!
-    token?: string | null; // String
-    username: string; // String!
-  }
-  UserDetails: { // root type
-    firstName?: string | null; // String
-    id: string; // ID!
-    lastName?: string | null; // String
-    userId: string; // String!
+  Users: { // root type
+    Email: string; // String!
+    Id: string; // ID!
   }
 }
 
@@ -89,157 +58,52 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
-  Item: { // field return type
-    PartName: NexusGenRootTypes['PartName'] | null; // PartName
-    SaberPart: NexusGenRootTypes['SaberPart'] | null; // SaberPart
-    User: NexusGenRootTypes['User'] | null; // User
-    carts: NexusGenRootTypes['User'][]; // [User!]!
-    id: string; // ID!
-    partDescription: string | null; // String
-    price: number | null; // Int
-    userId: string | null; // String
+  Characters: { // field return type
+    OwnerId: string; // String!
+    Users: NexusGenRootTypes['Users']; // Users!
   }
   Login: { // field return type
     id: string | null; // ID
-    token: string | null; // String
-    username: string | null; // String
   }
   Mutation: { // field return type
     _deprecated_field: string | null; // String
-    addToCart: NexusGenRootTypes['Item']; // Item!
-    buyCart: NexusGenRootTypes['Item'][]; // [Item!]!
-    itemCreate: NexusGenRootTypes['Item'] | null; // Item
-    itemSell: NexusGenRootTypes['Item'] | null; // Item
-    itemUpdatePrice: NexusGenRootTypes['Item'][]; // [Item!]!
-    removeFromCart: NexusGenRootTypes['Item']; // Item!
-    userCreate: NexusGenRootTypes['Login']; // Login!
     userLogin: NexusGenRootTypes['Login']; // Login!
-  }
-  PartName: { // field return type
-    id: string; // ID!
-    name: string; // String!
   }
   Query: { // field return type
     _deprecated_field: string | null; // String
-    displayItems: NexusGenRootTypes['Item'][]; // [Item!]!
-    filterItems: NexusGenRootTypes['Item'][]; // [Item!]!
-    items: NexusGenRootTypes['Item'][]; // [Item!]!
-    userCart: NexusGenRootTypes['Item'][]; // [Item!]!
-    userDetails: NexusGenRootTypes['User'] | null; // User
-    users: NexusGenRootTypes['User'][]; // [User!]!
   }
-  SaberPart: { // field return type
-    id: string; // ID!
-    name: string; // String!
-  }
-  Subscription: { // field return type
-    userMoney: number | null; // Int
-  }
-  User: { // field return type
-    cart: NexusGenRootTypes['Item'][]; // [Item!]!
-    id: string; // ID!
-    inventory: NexusGenRootTypes['Item'][]; // [Item!]!
-    money: number; // Int!
-    token: string | null; // String
-    username: string; // String!
-  }
-  UserDetails: { // field return type
-    firstName: string | null; // String
-    id: string; // ID!
-    lastName: string | null; // String
-    userId: string; // String!
+  Users: { // field return type
+    Email: string; // String!
+    Id: string; // ID!
   }
 }
 
 export interface NexusGenFieldTypeNames {
-  Item: { // field return type name
-    PartName: 'PartName'
-    SaberPart: 'SaberPart'
-    User: 'User'
-    carts: 'User'
-    id: 'ID'
-    partDescription: 'String'
-    price: 'Int'
-    userId: 'String'
+  Characters: { // field return type name
+    OwnerId: 'String'
+    Users: 'Users'
   }
   Login: { // field return type name
     id: 'ID'
-    token: 'String'
-    username: 'String'
   }
   Mutation: { // field return type name
     _deprecated_field: 'String'
-    addToCart: 'Item'
-    buyCart: 'Item'
-    itemCreate: 'Item'
-    itemSell: 'Item'
-    itemUpdatePrice: 'Item'
-    removeFromCart: 'Item'
-    userCreate: 'Login'
     userLogin: 'Login'
-  }
-  PartName: { // field return type name
-    id: 'ID'
-    name: 'String'
   }
   Query: { // field return type name
     _deprecated_field: 'String'
-    displayItems: 'Item'
-    filterItems: 'Item'
-    items: 'Item'
-    userCart: 'Item'
-    userDetails: 'User'
-    users: 'User'
   }
-  SaberPart: { // field return type name
-    id: 'ID'
-    name: 'String'
-  }
-  Subscription: { // field return type name
-    userMoney: 'Int'
-  }
-  User: { // field return type name
-    cart: 'Item'
-    id: 'ID'
-    inventory: 'Item'
-    money: 'Int'
-    token: 'String'
-    username: 'String'
-  }
-  UserDetails: { // field return type name
-    firstName: 'String'
-    id: 'ID'
-    lastName: 'String'
-    userId: 'String'
+  Users: { // field return type name
+    Email: 'String'
+    Id: 'ID'
   }
 }
 
 export interface NexusGenArgTypes {
   Mutation: {
-    addToCart: { // args
-      itemId: string; // String!
-    }
-    itemSell: { // args
-      itemId: string; // String!
-    }
-    removeFromCart: { // args
-      itemId: string; // String!
-    }
-    userCreate: { // args
-      password: string; // String!
-      username: string; // String!
-    }
     userLogin: { // args
       password: string; // String!
       username: string; // String!
-    }
-  }
-  Query: {
-    displayItems: { // args
-      username: string; // String!
-    }
-    filterItems: { // args
-      saberPart: string; // String!
     }
   }
 }

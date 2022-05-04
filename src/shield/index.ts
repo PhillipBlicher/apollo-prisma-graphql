@@ -1,5 +1,5 @@
 import { ApolloError, AuthenticationError } from 'apollo-server-errors';
-import { allow, deny, not, rule, shield } from 'graphql-shield';
+import { allow, rule, shield } from 'graphql-shield';
 
 const isAuthenticated = rule()(async (source, args, ctx) => {
   return !!ctx.user ? true : new AuthenticationError('yikes');
@@ -10,13 +10,9 @@ export const permissions = shield(
     Query: {
       '*': isAuthenticated,
     },
-    Subscription: {
-      '*': allow,
-    },
     Mutation: {
       '*': isAuthenticated,
       userLogin: allow,
-      userCreate: allow,
     },
   },
   {

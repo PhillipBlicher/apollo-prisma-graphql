@@ -1,39 +1,23 @@
-version: '3.5'
-
+version: "3.2"
 services:
-  postgres:
-    container_name: postgres_container
-    image: postgres
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
-      PGDATA: /data/postgres
-    volumes:
-      - postgres:/data/postgres
-    ports:
-      - '5432:5432'
-    networks:
-      - postgres
-    restart: unless-stopped
-
-  pgadmin:
-    container_name: pgadmin_container
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
-    volumes:
-      - pgadmin:/root/.pgadmin
-    ports:
-      - '${PGADMIN_PORT:-5050}:80'
-    networks:
-      - postgres
-    restart: unless-stopped
-
-networks:
-  postgres:
-    driver: bridge
-
+    database:
+        container_name: database
+        ports: 
+            - 1433:1433
+        image: "mcr.microsoft.com/mssql/server"
+        environment:
+            SA_PASSWORD: "ZsQPJst6pcZQaLHt"
+            ACCEPT_EULA: "Y"
+        volumes:
+            - mssql_server_data:/var/opt/mssql
+        logging: 
+            driver: "none"
+        restart: unless-stopped
+        healthcheck:
+            test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "$$SA_PASSWORD" -Q "SELECT 1" || exit 1
+            interval: 5s
+            timeout: 10s
+            retries: 5
+            start_period: 10s
 volumes:
-  postgres:
-  pgadmin:
+  mssql_server_data:
